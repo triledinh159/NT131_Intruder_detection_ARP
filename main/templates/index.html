@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Live Stream Webcam with Latest Images</title>
+<style>
+  #container {
+    display: flex;
+    padding: 50px;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  #left {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #latestImageContainer {
+    width: 100%;
+    display: flex;
+    gap: 15px;
+
+  }
+
+  #folder1 {
+    width: 50%;
+  }
+  #folder2 {
+    width: 50%;
+  }
+  #fold1{
+    width:75%;
+    height:100%;
+  }
+  #fold2{
+    width:100%;
+    height:100%;
+  }
+
+  #web{
+    width:100%;
+    height:100%;
+  }
+</style>
+</head>
+<body>
+    <h1>Live Stream Webcam with Latest Images</h1>
+    <div id="container">
+        <!-- Display video stream from webcam -->
+            <div id="left">
+                <h2>Camera</h2>
+                <img id = "web" src="{{ url_for('video_feed') }}" alt="Webcam Stream" id="webcamStream">
+            </div>
+
+            <div id="latestImageContainer">
+                <div id="folder1">
+                    <h3>Face Captured</h3>
+                    {% if latest_image1 %}
+                        <img id="fold1" src="{{ url_for('static', filename='folder1/' + latest_image1) }}" alt="Latest Image 1">
+                    {% else %}
+                        <p>No latest image available for Folder 1.</p>
+                    {% endif %}
+                </div>
+                <div id="folder2">
+                    <h3>Entity Captured</h3>
+                    {% if latest_image2 %}
+                        <img id="fold2"src="{{ url_for('static', filename='folder2/' + latest_image2) }}" alt="Latest Image 2">
+                    {% else %}
+                        <p>No latest image available for Folder 2.</p>
+                    {% endif %}
+                </div>
+            </div>
+    </div>
+
+    <script>
+        var latestImageTime1 = 0;
+        var latestImageTime2 = 0;
+    
+        function updateLatestImages() {
+            var xhr1 = new XMLHttpRequest();
+            xhr1.open("GET", "/latest_image1", true);
+            xhr1.onreadystatechange = function () {
+                if (xhr1.readyState === 4 && xhr1.status === 200) {
+                    var response1 = JSON.parse(xhr1.responseText);
+                    var newLatestImageTime1 = response1.latest_image_time;
+                    if (newLatestImageTime1 !== latestImageTime1) {
+                        latestImageTime1 = newLatestImageTime1;
+                        var latestImageSrc1 = response1.latest_image_src;
+                        document.getElementById('folder1').querySelector('img').src = latestImageSrc1;
+                    }
+                }
+            };
+            xhr1.send();
+
+            var xhr2 = new XMLHttpRequest();
+            xhr2.open("GET", "/latest_image2", true);
+            xhr2.onreadystatechange = function () {
+                if (xhr2.readyState === 4 && xhr2.status === 200) {
+                    var response2 = JSON.parse(xhr2.responseText);
+                    var newLatestImageTime2 = response2.latest_image_time;
+                    if (newLatestImageTime2 !== latestImageTime2) {
+                        latestImageTime2 = newLatestImageTime2;
+                        var latestImageSrc2 = response2.latest_image_src;
+                        document.getElementById('folder2').querySelector('img').src = latestImageSrc2;
+                    }
+                }
+            };
+            xhr2.send();
+        }
+    
+        setInterval(updateLatestImages, 1000);
+    </script>
+</body>
+</html>
