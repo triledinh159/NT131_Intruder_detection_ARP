@@ -6,9 +6,9 @@ import json
 import boto3
 import requests  # Import the requests library
 
-AWS_ACCESS_KEY_ID = 'AKIAZ553U37JIDZID7UD'
-AWS_SECRET_ACCESS_KEY = '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'
-S3_BUCKET_NAME = 'zalouserdata'
+AWS_ACCESS_KEY_ID = ''
+AWS_SECRET_ACCESS_KEY = ''
+S3_BUCKET_NAME = ''
 s3_client = boto3.client(
     's3',
     aws_access_key_id=AWS_ACCESS_KEY_ID,
@@ -58,7 +58,7 @@ def is_already_registered(username, mac_address, user_id):
 
 def call_api(user_id, username):
     # Function to call the API
-    api_url = f"https://dho61nl46f.execute-api.ap-southeast-1.amazonaws.com/test/userbasicdata?userID={user_id}&username={username}"
+    api_url = ""
     response = requests.get(api_url)
     if response.status_code == 200:
         print(f"API call successful for user ID {user_id}, username {username}")
