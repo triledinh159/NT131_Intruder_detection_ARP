@@ -6,9 +6,9 @@ import json
 import boto3
 import requests  # Import the requests library
 
-AWS_ACCESS_KEY_ID = ''
-AWS_SECRET_ACCESS_KEY = ''
-S3_BUCKET_NAME = ''
+AWS_ACCESS_KEY_ID = '<>'
+AWS_SECRET_ACCESS_KEY = '<>'
+S3_BUCKET_NAME = 'zalouserdata'
 s3_client = boto3.client(
     's3',
     aws_access_key_id=AWS_ACCESS_KEY_ID,
